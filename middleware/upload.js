@@ -15,6 +15,8 @@ const storage = new CloudinaryStorage({
 
       return `${firstName}_resume`;
     },
+    type: "upload",        // ADD THIS
+    access_mode: "public", 
   },
 });
 
