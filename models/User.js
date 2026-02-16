@@ -30,7 +30,7 @@ const certificationSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  name: String,
+  
   firstName: String,
   lastName: String,
   email: String,
