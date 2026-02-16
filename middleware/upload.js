@@ -6,8 +6,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "resumes",
-    resource_type: "raw", 
-    format: async (req, file) => "pdf",
+    resource_type: "raw",
     public_id: (req, file) => {
       const firstName =
         (req.body.firstName || "user")

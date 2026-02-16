@@ -119,17 +119,28 @@ router.post(
   auth,
   upload.single("resume"),
   async (req, res) => {
-    const fileUrl = req.file.path;
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
 
-    const user = await User.findByIdAndUpdate(
-      req.userId,
-      { resume: fileUrl },
-      { returnDocument: "after" }
-    );
+      // Cloudinary file URL
+      const fileUrl = req.file.path;
 
-    res.json(user);
+      const user = await User.findByIdAndUpdate(
+        req.userId,
+        { resume: fileUrl },
+        { returnDocument: "after" }
+      );
+
+      res.json(user);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Resume upload failed" });
+    }
   }
 );
+
 
 
 router.put("/", auth, async (req, res) => {
