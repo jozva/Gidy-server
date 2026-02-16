@@ -2,30 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-
+const upload = require("../middleware/upload");
 const SECRET = "secret123";
 
-const multer = require("multer");
-const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const firstName =
-      (req.body.firstName || "user")
-        .toLowerCase()
-        .replace(/\s+/g, "");
-
-    const ext = path.extname(file.originalname);
-    const fileName = `${firstName}_resume${ext}`;
-
-    cb(null, fileName);
-  },
-});
-
-const upload = multer({ storage });
 
 
 function auth(req, res, next) {
@@ -50,18 +30,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.put("/", auth, async (req, res) => {
-  try {
-    const updated = await User.findByIdAndUpdate(
-      req.userId,
-      req.body,
-      { new: true }
-    );
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json("Update failed");
-  }
-});
+
 
 router.post("/education", auth, async (req, res) => {
   try {
@@ -124,7 +93,6 @@ router.post(
         return res.status(400).json({ message: "No file uploaded" });
       }
 
-      // Cloudinary file URL
       const fileUrl = req.file.path;
 
       const user = await User.findByIdAndUpdate(

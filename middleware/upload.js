@@ -7,11 +7,11 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "resumes",
     resource_type: "raw",
+    format: async () => "pdf",
     public_id: (req, file) => {
-      const firstName =
-        (req.body.firstName || "user")
-          .toLowerCase()
-          .replace(/\s+/g, "");
+      const firstName = (req.body.firstName || "user")
+        .toLowerCase()
+        .replace(/\s+/g, "");
 
       return `${firstName}_resume`;
     },
